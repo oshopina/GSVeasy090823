@@ -159,8 +159,8 @@ rm(
   p_value_abs
 )
 
-pdf("Figures/N_gene_plots.pdf", width = 15, height = 7)
-for (plot in gene_plots$N_per_million) {
-  print(plot)
-}
-dev.off()
+# pdf("Figures/N_gene_plots.pdf", width = 15, height = 7)
+# for (plot in gene_plots$N_per_million) {
+#   print(plot)
+# }
+# dev.off()
