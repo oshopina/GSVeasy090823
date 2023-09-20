@@ -84,18 +84,20 @@ anova_results = list()
 anova_results_abs = list()
 
 for (i in c ('S_per_million', 'C_per_million')) {
-  anova <- auto_aov_fixed(GSV_gene_count_list[[i]], ~ pH, GSV_gene_count_list$env)
+  anova <-
+    auto_aov_fixed(GSV_gene_count_list[[i]], ~ pH, GSV_gene_count_list$env)
   anova_results[[i]] = anova$Results
   
-  abs_genes = GSV_gene_count_list[[i]][rownames(GSV_gene_count_list[[i]]) %in% qPCR$SampleID,]
-  abs_genes = abs_genes/1000000*qPCR$X16s.copynumber_g.dry.soil
+  abs_genes = GSV_gene_count_list[[i]][rownames(GSV_gene_count_list[[i]]) %in% qPCR$SampleID, ]
+  abs_genes = abs_genes / 1000000 * qPCR$X16s.copynumber_g.dry.soil
   anova_abs <- auto_aov_fixed(abs_genes, ~ pH.x, qPCR)
   anova_results_abs[[i]] = anova_abs$Results
   
   genes_list <- unique(anova$Results$Data)
   plots <- list()
   for (j in genes_list) {
-    df <- cbind(GSV_gene_count_list[[i]][[j]], GSV_gene_count_list$env$pH) %>% as.data.frame()
+    df <-
+      cbind(GSV_gene_count_list[[i]][[j]], GSV_gene_count_list$env$pH) %>% as.data.frame()
     model <- lm(V2 ~ V1, data = df)
     p_value <- summary(model)$coefficients["V1", "Pr(>|t|)"]
     color <- ifelse(coef(model)["V1"] > 0, "red", "blue")
@@ -135,11 +137,29 @@ for (i in c ('S_per_million', 'C_per_million')) {
   gene_plots[[i]] <- plots
 }
 
-rm(anova, anova_abs, abs_genes, df, df_abs, model, model_abs, plot, plot_abs, 
-   plot_all, plots, color, color_abs, genes_list, i, j, p_value, p_value_abs)
+rm(
+  anova,
+  anova_abs,
+  abs_genes,
+  df,
+  df_abs,
+  model,
+  model_abs,
+  plot,
+  plot_abs,
+  plot_all,
+  plots,
+  color,
+  color_abs,
+  genes_list,
+  i,
+  j,
+  p_value,
+  p_value_abs
+)
 
-pdf("Figures/S_gene_plots.pdf", width = 15, height = 7)
-for (plot in gene_plots$S_per_million) {
-  print(plot)
-}
-dev.off()
+# pdf("Figures/S_gene_plots.pdf", width = 15, height = 7)
+# for (plot in gene_plots$S_per_million) {
+#   print(plot)
+# }
+# dev.off()
